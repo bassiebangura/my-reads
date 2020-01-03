@@ -12,13 +12,37 @@ import MainPage from "./Components/MainPage";
 import SearchPage from "./Components/SearchPage";
 
 function BooksApp () {
-	const [Books, setBooks] = useState({})
+	const [Books, setBooks] = useState({
+		"currentlyReading": [],
+		"wantToRead":[],
+		"read": []
+	})
 
 	useEffect(() => {
 		BooksAPI.getAll().then(res => {
-			setBooks({Books: res})
+			console.log(res)
+			let simplifiedArrayOfBooks = res.map(book => (
+					{
+					bookId: book.id,
+					shelf: book.shelf,
+					title: book.title,
+					authors: book.authors,
+					imageLink: book.imageLinks.thumbnail
+					
+				}
+			))
+			let Books = 
+				{
+					"currentlyReading": simplifiedArrayOfBooks.filter(book => book.shelf === "currentlyReading"),
+					"wantToRead":simplifiedArrayOfBooks.filter(book => book.shelf === "wantToRead"),
+					"read":simplifiedArrayOfBooks.filter(book => book.shelf === "read")
+					
+				}
+			
+			setBooks({Books})
 		})
 	}, [setBooks])
+	
 		
 	return (
 				<Router>
@@ -26,7 +50,7 @@ function BooksApp () {
 						<Route exact path="/">
 							<MainPage books={Books.Books}/>
 						</Route>
-						<Route exact path="/users">
+						<Route exact path="/search">
 							<SearchPage />
 						</Route>
 					</Switch>

@@ -1,7 +1,12 @@
 import React   from 'react'; 
-import {Link} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import * as BooksAPI from "../BooksAPI";
 function SearchPage () {
+    let history = useHistory();
+
+    let handleClick = () => {
+        history.push("/")
+    }
     let handleOnChange = (e) => {
         BooksAPI.search(e.target.value).then(res => console.log(res))
     }
@@ -9,12 +14,12 @@ function SearchPage () {
         <div className="search-books">
             <div className="search-books-bar">
                
-                 <Link to="/"> <button
+                  <button
                     className="close-search"
-                    onClick={() => console.log("You clicked closed")}
+                    onClick={handleClick}
                 >
                    
-                </button></Link>
+                </button>
                 <div className="search-books-input-wrapper">
                     {/*
         NOTES: The search from BooksAPI is limited to a particular set of search terms.
