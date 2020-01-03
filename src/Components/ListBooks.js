@@ -2,7 +2,7 @@ import React from "react";
 import {useHistory} from "react-router-dom"
 import BookCard from "./BookCard"
 
-function ListBooks ({books}) {
+function ListBooks ({books, handleSelectChange}) {
     let history = useHistory();
     let handleClick = ()  => {
     history.push("/search");
@@ -19,7 +19,7 @@ function ListBooks ({books}) {
                                 <div className="bookshelf-books">
                                     <ol className="books-grid">
                                         {
-                                           books && books.currentlyReading.map(book => <BookCard book={book}/>)
+                                           books && books.currentlyReading.map(book => <BookCard handleSelectChange={handleSelectChange} book={book}/>)
                                         }
                                     </ol>
                                 </div>
@@ -29,7 +29,7 @@ function ListBooks ({books}) {
                                 <div className="bookshelf-books">
                                     <ol className="books-grid">
                                          {
-                                           books && books.wantToRead.map(book => <BookCard book={book}/>)
+                                           books && books.wantToRead.map(book => <BookCard handleSelectChange={handleSelectChange} book={book}/>)
                                         }
                                     </ol>
                                 </div>
@@ -39,7 +39,7 @@ function ListBooks ({books}) {
                                 <div className="bookshelf-books">
                                     <ol className="books-grid">
                                          {
-                                           books && books.read.map(book => <BookCard book={book}/>)
+                                           books && books.read.map(book => <BookCard handleSelectChange={handleSelectChange} book={book}/>)
                                         }
                                     </ol>
                                 </div>

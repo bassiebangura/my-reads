@@ -1,11 +1,9 @@
-import React, {useState, useEffect, useCallback} from "react";
+import React, {useState, useEffect} from "react";
 import * as BooksAPI from "./BooksAPI";
 import {
 	BrowserRouter as Router,
 	Route,
-	Switch,
-	useLocation,
-	useHistory
+	Switch
 } from "react-router-dom";
 import "./App.css";
 import MainPage from "./Components/MainPage";
@@ -18,19 +16,25 @@ function BooksApp () {
 		"wantToRead":[],
 		"read": []
 	})
- let bookTest = {id: "nggnmAEACAAJ"}
+ 
 
 	let handleSelectChange = (e, book) => {
+		console.log("what are you my friend")
 		let value = e.target.value;
 		BooksAPI.update(book, value)
+		.then(res => {
+			refreshBooks()
+		})
+		.catch  ( e =>
+            (console.log(e))
+        )
 	}
 
 	let refreshBooks = () => {
 			BooksAPI.getAll().then(res => {
-			console.log(res)
 			let simplifiedArrayOfBooks = res.map(book => (
 					{
-					bookId: book.id,
+					id: book.id,
 					shelf: book.shelf,
 					title: book.title,
 					authors: book.authors,
@@ -46,7 +50,7 @@ function BooksApp () {
 					
 				}
 			
-			setBooks({Books})
+			setBooks(Books)
 		})
 	}
 
@@ -54,15 +58,15 @@ function BooksApp () {
 		refreshBooks()
 	}, [setBooks])
 	
-	 BooksAPI.update(bookTest, "read").then(res => console.log(res))
+	 //BooksAPI.update(bookTest, "currentlyReading").then(res => console.log(res))
 	return (
 				<Router>
 					<Switch>
 						<Route exact path="/">
-							<MainPage books={Books.Books}/>
+							<MainPage handleSelectChange={handleSelectChange} books={Books}/>
 						</Route>
 						<Route exact path="/search">
-							<SearchPage />
+							<SearchPage books={Books} handleSelectChange={handleSelectChange}/>
 						</Route>
 					</Switch>
 				</Router>

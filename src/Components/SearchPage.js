@@ -3,7 +3,9 @@ import {useHistory} from "react-router-dom";
 import * as BooksAPI from "../BooksAPI";
 import BookCard from "./BookCard"
 
-function SearchPage () {
+function SearchPage ({books, handleSelectChange}) {
+    let arrayOfCurrentBooksInLibrary = [...books.currentlyReading, ...books.wantToRead, ...books.read]
+    
     const [SearchResults, updateSearchResults] = useState([])
     let history = useHistory();
 
@@ -12,17 +14,23 @@ function SearchPage () {
     }
     let handleOnChange = (e) => {
         BooksAPI.search(e.target.value).then(res => {
-            console.log(res)
+    
          if (res) {
-              let arrayOfBooks =  res.map( book => ({
-                bookId: book.id,
-                shelf: "none",
+            
+              let arrayOfBooks =  res.filter(book => book.imageLinks).map(  
+                book => ({
+                id: book.id,
                 title: book.title,
                 authors: book.authors,
                 imageLink: book.imageLinks && book.imageLinks.thumbnail
             })
 
          )
+        //  let arrayOfBooksReflectingLibraryShelfCategory = arrayOfBooks.map(book => arrayOfCurrentBooksInLibrary.filter(
+        //     bookInLibrary => (book.id === bookInLibrary.id)
+        //  ))
+
+        //  console.log(arrayOfBooksReflectingLibraryShelfCategory.flat())
           updateSearchResults(arrayOfBooks)
          }
        
@@ -35,7 +43,7 @@ function SearchPage () {
         
       
     }
-    console.log(SearchResults)
+    
     return (
         <div className="search-books">
             <div className="search-books-bar">
@@ -61,7 +69,7 @@ function SearchPage () {
             <div className="search-books-results">
                 <ol className="books-grid">
                     {
-                        SearchResults  &&    SearchResults.map(book => <BookCard book={book}/>)
+                        SearchResults  &&    SearchResults.map(book => <BookCard handleSelectChange={handleSelectChange} book={book}/>)
                     } 
                    
                 </ol>

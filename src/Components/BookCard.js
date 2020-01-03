@@ -1,7 +1,8 @@
 import React from "react";
 
 
-function BookCard ({book}) {
+function BookCard ({book, handleSelectChange}) {
+   
     return (
         <li>
             <div className="book">
@@ -16,7 +17,7 @@ function BookCard ({book}) {
                         }}
                     ></div>
                     <div className="book-shelf-changer">
-                        <select value={book.shelf}>
+                        <select value={book.shelf} onChange={(e) => handleSelectChange(e, book)}>
                             <option value="move" disabled>
                                 Move to...
                             </option>
