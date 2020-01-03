@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import * as BooksAPI from "./BooksAPI";
 import {
 	BrowserRouter as Router,
@@ -11,15 +11,22 @@ import "./App.css";
 import MainPage from "./Components/MainPage";
 import SearchPage from "./Components/SearchPage";
 
+
 function BooksApp () {
 	const [Books, setBooks] = useState({
 		"currentlyReading": [],
 		"wantToRead":[],
 		"read": []
 	})
+ let bookTest = {id: "nggnmAEACAAJ"}
 
-	useEffect(() => {
-		BooksAPI.getAll().then(res => {
+	let handleSelectChange = (e, book) => {
+		let value = e.target.value;
+		BooksAPI.update(book, value)
+	}
+
+	let refreshBooks = () => {
+			BooksAPI.getAll().then(res => {
 			console.log(res)
 			let simplifiedArrayOfBooks = res.map(book => (
 					{
@@ -27,7 +34,7 @@ function BooksApp () {
 					shelf: book.shelf,
 					title: book.title,
 					authors: book.authors,
-					imageLink: book.imageLinks.thumbnail
+					imageLink: book.imageLinks.thumbnail 
 					
 				}
 			))
@@ -41,9 +48,13 @@ function BooksApp () {
 			
 			setBooks({Books})
 		})
+	}
+
+	useEffect(() => {
+		refreshBooks()
 	}, [setBooks])
 	
-		
+	 BooksAPI.update(bookTest, "read").then(res => console.log(res))
 	return (
 				<Router>
 					<Switch>

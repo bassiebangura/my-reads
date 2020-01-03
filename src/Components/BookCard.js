@@ -34,7 +34,7 @@ function BookCard ({book}) {
                 </div>
                 <div className="book-authors">
                 {
-                   book.authors.map((author, i, arr) => (arr.length - 1 === i ? author : `${author}, `))
+                  book.authors &&  book.authors.map((author, i, arr) => (arr.length - 1 === i ? author : `${author}, `))
                 }
                 </div>
             </div>

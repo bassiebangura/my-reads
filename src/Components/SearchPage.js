@@ -1,15 +1,41 @@
-import React   from 'react'; 
+import React , {useState}  from 'react'; 
 import {useHistory} from "react-router-dom";
 import * as BooksAPI from "../BooksAPI";
+import BookCard from "./BookCard"
+
 function SearchPage () {
+    const [SearchResults, updateSearchResults] = useState([])
     let history = useHistory();
 
     let handleClick = () => {
         history.push("/")
     }
     let handleOnChange = (e) => {
-        BooksAPI.search(e.target.value).then(res => console.log(res))
+        BooksAPI.search(e.target.value).then(res => {
+            console.log(res)
+         if (res) {
+              let arrayOfBooks =  res.map( book => ({
+                bookId: book.id,
+                shelf: "none",
+                title: book.title,
+                authors: book.authors,
+                imageLink: book.imageLinks && book.imageLinks.thumbnail
+            })
+
+         )
+          updateSearchResults(arrayOfBooks)
+         }
+       
+        }
+        
+        ).catch  ( e =>
+            (console.log(e))
+        )
+            
+        
+      
     }
+    console.log(SearchResults)
     return (
         <div className="search-books">
             <div className="search-books-bar">
@@ -33,7 +59,12 @@ function SearchPage () {
                 </div>
             </div>
             <div className="search-books-results">
-                <ol className="books-grid">hello</ol>
+                <ol className="books-grid">
+                    {
+                        SearchResults  &&    SearchResults.map(book => <BookCard book={book}/>)
+                    } 
+                   
+                </ol>
             </div>
         </div>
     )
