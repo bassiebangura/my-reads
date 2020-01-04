@@ -19,7 +19,7 @@ function ListBooks ({books, handleSelectChange}) {
                                 <div className="bookshelf-books">
                                     <ol className="books-grid">
                                         {
-                                           books && books.currentlyReading.map(book => <BookCard handleSelectChange={handleSelectChange} book={book}/>)
+                                           books && books.currentlyReading.map(book => <BookCard key={book.id} handleSelectChange={handleSelectChange} book={book}/>)
                                         }
                                     </ol>
                                 </div>
@@ -29,7 +29,7 @@ function ListBooks ({books, handleSelectChange}) {
                                 <div className="bookshelf-books">
                                     <ol className="books-grid">
                                          {
-                                           books && books.wantToRead.map(book => <BookCard handleSelectChange={handleSelectChange} book={book}/>)
+                                           books && books.wantToRead.map(book => <BookCard key={book.id} handleSelectChange={handleSelectChange} book={book}/>)
                                         }
                                     </ol>
                                 </div>
@@ -39,7 +39,7 @@ function ListBooks ({books, handleSelectChange}) {
                                 <div className="bookshelf-books">
                                     <ol className="books-grid">
                                          {
-                                           books && books.read.map(book => <BookCard handleSelectChange={handleSelectChange} book={book}/>)
+                                           books && books.read.map(book => <BookCard key={book.id} handleSelectChange={handleSelectChange} book={book}/>)
                                         }
                                     </ol>
                                 </div>

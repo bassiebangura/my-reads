@@ -19,7 +19,6 @@ function BooksApp () {
  
 
 	let handleSelectChange = (e, book) => {
-		console.log("what are you my friend")
 		let value = e.target.value;
 		BooksAPI.update(book, value)
 		.then(res => {

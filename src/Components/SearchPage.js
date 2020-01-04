@@ -4,7 +4,7 @@ import * as BooksAPI from "../BooksAPI";
 import BookCard from "./BookCard"
 
 function SearchPage ({books, handleSelectChange}) {
-    let arrayOfCurrentBooksInLibrary = [...books.currentlyReading, ...books.wantToRead, ...books.read]
+    let currentBooksInLibrary = [...books.currentlyReading, ...books.wantToRead, ...books.read]
     
     const [SearchResults, updateSearchResults] = useState([])
     let history = useHistory();
@@ -17,21 +17,32 @@ function SearchPage ({books, handleSelectChange}) {
     
          if (res) {
             
-              let arrayOfBooks =  res.filter(book => book.imageLinks).map(  
+              let arrayOfBooksFromSearch =  res.filter(book => book.imageLinks).map(  
                 book => ({
                 id: book.id,
+                shelf: "none",
                 title: book.title,
                 authors: book.authors,
                 imageLink: book.imageLinks && book.imageLinks.thumbnail
             })
 
          )
-        //  let arrayOfBooksReflectingLibraryShelfCategory = arrayOfBooks.map(book => arrayOfCurrentBooksInLibrary.filter(
-        //     bookInLibrary => (book.id === bookInLibrary.id)
-        //  ))
-
-        //  console.log(arrayOfBooksReflectingLibraryShelfCategory.flat())
-          updateSearchResults(arrayOfBooks)
+     
+    let booksToDisplay = arrayOfBooksFromSearch.reduce((result, bookFromSearch) => {
+        //function compares two arrays and return a single array,
+        //tha reflects the current shelf of book if book is currently 
+        //in library
+    const bookToDisplay = currentBooksInLibrary.find(bookInLib => bookInLib.id === bookFromSearch.id);
+    if(bookToDisplay) {
+        result.push(bookToDisplay)
+    } else {
+        result.push(bookFromSearch);
+    }
+    return result;
+    
+    }, []);
+    
+          updateSearchResults(booksToDisplay)
          }
        
         }
@@ -66,10 +77,10 @@ function SearchPage ({books, handleSelectChange}) {
                     <input type="text" placeholder="Search by title or author" onChange={handleOnChange}/>
                 </div>
             </div>
-            <div className="search-books-results">
+            <div className="search-books-results">  
                 <ol className="books-grid">
                     {
-                        SearchResults  &&    SearchResults.map(book => <BookCard handleSelectChange={handleSelectChange} book={book}/>)
+                        SearchResults  &&    SearchResults.map(book => <BookCard key={book.id} handleSelectChange={handleSelectChange} book={book}/>)
                     } 
                    
                 </ol>
