@@ -2,7 +2,7 @@ This project was created with [Create React App](https://github.com/facebook/cre
 
 ### `Instructions`
 
-- Install this project using npm  `install`. 
+- Install this project using `npm install`. 
 - Launch using `npm start`.
 
 
