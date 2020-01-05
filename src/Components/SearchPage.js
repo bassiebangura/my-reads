@@ -19,7 +19,6 @@ function SearchPage ({books, handleSelectChange}) {
 
          if (res) {
                   if (res.error) {
-             console.log("this is error")
              updateSearchResults([])
          } else {
                        let arrayOfBooksFromSearch =  res.filter(book => book.imageLinks).map(  
@@ -51,49 +50,9 @@ function SearchPage ({books, handleSelectChange}) {
          }
          } 
          if (!res) {
-             console.log(res, "is undefined")
              updateSearchResults([]);
          }
         }
-        //  if (res.error) {
-        //      console.log("this is error")
-        //      updateSearchResults([])
-            
-       
-        //  } else if (res) {
-        //         let arrayOfBooksFromSearch =  res.filter(book => book.imageLinks).map(  
-        //         book => ({
-        //         id: book.id,
-        //         shelf: "none",
-        //         title: book.title,
-        //         authors: book.authors,
-        //         imageLink: book.imageLinks && book.imageLinks.thumbnail
-        //     })
-
-        //  )
-     
-        // let booksToDisplay = arrayOfBooksFromSearch.reduce((result, bookFromSearch) => {
-        //     //function compares two arrays and return a single array,
-        //     //tha reflects the current shelf of book if book is currently 
-        //     //in library
-        // const bookToDisplay = currentBooksInLibrary.find(bookInLib => bookInLib.id === bookFromSearch.id);
-        // if(bookToDisplay) {
-        //     result.push(bookToDisplay)
-        // } else {
-        //     result.push(bookFromSearch);
-        // }
-        // return result;
-        
-        // }, []);
-    
-        //   updateSearchResults(booksToDisplay)
-        //  } else if (!res) {
-        //      console.log("nothing returned")
-        //      updateSearchResults([])
-        //  }
-       
-        // }
-        
         ).catch  ( e =>
             (console.log(e))
            
